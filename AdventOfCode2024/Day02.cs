@@ -51,7 +51,7 @@ internal sealed class Day02 : AsyncCommand
             }
         }
         
-        AnsiConsole.MarkupLinceInterpolated($"[bold Green]Part 2:[/] {safeReports}");
+        AnsiConsole.MarkupLineInterpolated($"[bold Green]Part 2:[/] {safeReports}");
         
         return 0;
     }
