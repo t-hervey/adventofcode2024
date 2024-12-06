@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using AdventOfCode2024.DataFiles.Utils;
 using Spectre.Console;
 using Spectre.Console.Cli;
+using JollyRegex = AdventOfCode2024.Utils.JollyRegex;
 
 namespace AdventOfCode2024;
 

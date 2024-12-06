@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace AdventOfCode2024.DataFiles.Utils;
+namespace AdventOfCode2024.Utils;
 
 internal static partial class JollyRegex
 {
