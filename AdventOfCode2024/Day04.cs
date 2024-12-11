@@ -6,11 +6,11 @@ namespace AdventOfCode2024;
 internal sealed class Day04 : AsyncCommand
 {
     private bool _useSampleData = false;
-    private Dictionary<string, Node> _graph = new Dictionary<string, Node>();
+    private Dictionary<string, Node> _graph = new();
     private int _maxWidth = 0;
     private int _maxHeight = 0;
 
-    private Dictionary<int, char> _depthLookupDictionary = new Dictionary<int, char>()
+    private Dictionary<int, char> _depthLookupDictionary = new()
     {
         {0, 'X'},
         {1, 'M'},
@@ -37,7 +37,6 @@ internal sealed class Day04 : AsyncCommand
                         X = x, 
                         Y = y, 
                         Value = data[y][x],
-                        //Neighbors = AdjacentNodes(x, y)
                     });
             }
         }
@@ -55,6 +54,9 @@ internal sealed class Day04 : AsyncCommand
            
         }
         AnsiConsole.MarkupLineInterpolated($"[bold red]Part 1:[/] {counter}");
+        
+        counter = _graph.Values.Count(node => IsXMas(node));
+        AnsiConsole.MarkupLineInterpolated($"[bold green]Part 2:[/] {counter}");
         
         return 0;
     }
@@ -171,6 +173,26 @@ internal sealed class Day04 : AsyncCommand
                 continue;
             DepthLimitedDFSVisit(neighbor, depth + 1, maxDepth, path, ref count, nextDirection);
         }
+    }
+    
+    private bool IsXMas(Node node)
+    {
+        if (node.Neighbors.Count < 8 || node.Value != 'A')
+            return false;
+
+        AnsiConsole.WriteLine($"Checking {node.X},{node.Y}");
+        bool direction1 = (_graph[$"{node.X - 1},{node.Y - 1}"].Value == 'M' &&
+                           _graph[$"{node.X + 1},{node.Y + 1}"].Value == 'S') ||
+                          (_graph[$"{node.X - 1},{node.Y - 1}"].Value == 'S' &&
+                           _graph[$"{node.X + 1},{node.Y + 1}"].Value == 'M');
+        
+        bool direction2 = (_graph[$"{node.X + 1},{node.Y - 1}"].Value == 'M' &&
+                           _graph[$"{node.X - 1},{node.Y + 1}"].Value == 'S') ||
+                          (_graph[$"{node.X + 1},{node.Y - 1}"].Value == 'S' &&
+                           _graph[$"{node.X - 1},{node.Y + 1}"].Value == 'M');
+
+        AnsiConsole.WriteLine($"Direction 1: {direction1} Direction 2: {direction2}");
+        return direction1 && direction2;
     }
     
     private static double CalculateDirection(double x1, double y1, double x2, double y2)
