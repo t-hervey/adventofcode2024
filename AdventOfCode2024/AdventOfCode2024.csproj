@@ -24,6 +24,11 @@
       <None Update="DataFiles\Sample.txt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <Compile Remove="AocSettings.cs" />
+      <None Include="AocSettings.cs" />
+      <None Update="DataFiles\Day04.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
