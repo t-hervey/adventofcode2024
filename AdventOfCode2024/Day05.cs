@@ -5,7 +5,7 @@ namespace AdventOfCode2024;
 
 internal sealed class Day05 : AsyncCommand
 {
-    private bool _useSampleData = true;
+    private bool _useSampleData = false;
 
     public override async Task<int> ExecuteAsync(CommandContext context)
     {
@@ -32,6 +32,7 @@ internal sealed class Day05 : AsyncCommand
         }
 
         var centerPages = new List<int>();
+        var incorrectRevisions = new List<List<int>>();
         foreach (var revision in revisions)
         {
             var rulesAdheredTo = rules.TrueForAll(rule => RevisionMeetsRule(rule, revision));
@@ -39,9 +40,35 @@ internal sealed class Day05 : AsyncCommand
             {
                 centerPages.Add(revision[CenterPage(revision.Count) - 1]);
             }
+            else
+            {
+                incorrectRevisions.Add(revision);
+            }
         }
 
         AnsiConsole.MarkupLineInterpolated($"[bold red]Part 1:[/] {centerPages.Sum()}");
+        
+        centerPages = [];
+        var revisionCounter = 0;
+        while (revisionCounter < incorrectRevisions.Count)
+        {
+            var revision = incorrectRevisions[revisionCounter];
+            var failingRule = rules.FirstOrDefault(rule => !RevisionMeetsRule(rule, revision));
+            if(failingRule is null)
+            {
+                centerPages.Add(revision[CenterPage(revision.Count) - 1]);
+                revisionCounter++;
+            }
+            else
+            {
+                var endPageIndx = revision.IndexOf(failingRule.EndPage);
+                var startPageIndx = revision.IndexOf(failingRule.StartPage);
+                revision.RemoveAt(startPageIndx);
+                revision.Insert(endPageIndx, failingRule.StartPage);
+            }
+        }
+        
+        AnsiConsole.MarkupLineInterpolated($"[bold green]Part 2:[/] {centerPages.Sum()}");
         return 0;
     }
 
