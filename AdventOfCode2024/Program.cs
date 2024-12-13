@@ -3,6 +3,6 @@
 using AdventOfCode2024;
 using Spectre.Console.Cli;
 
-var app = new CommandApp<Day05>();
+var app = new CommandApp<Day06>();
 
 return app.Run(args);
